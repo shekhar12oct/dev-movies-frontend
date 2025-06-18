@@ -6,6 +6,7 @@ import MovieCardSkeleton from '../components/MovieCardSkeleton';
 
 const Movies = () => {
   const { category } = useParams();
+  const API_URL = import.meta.env.VITE_API_URL;
   const [loading, setLoading] = useState(true);
   const [movies, setMovies] = useState([]);
 
@@ -14,8 +15,8 @@ const Movies = () => {
       try {
         setLoading(true);
         const endpoint = category
-          ? `/api/movies/category/${category}`
-          : '/api/movies/allmovies';
+          ? `${API_URL}/movies/category/${category}`
+          : `${API_URL}/movies/allmovies`;
         const res = await axios.get(endpoint);
         setMovies(res.data);
       } catch (error) {
