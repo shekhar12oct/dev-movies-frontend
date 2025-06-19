@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard';
 import MovieCardSkeleton from '../components/MovieCardSkeleton';
+import MovieSearch from '../components/MovieSearch';
 
 const Movies = () => {
   const { category } = useParams();
@@ -29,11 +30,22 @@ const Movies = () => {
     fetchMovies();
   }, [category]);
 
+  const handleSearch = async (input) => {
+    try {
+      const endpoint = `${API_URL}/movies/searchmovies`;
+      const res = await axios.post(endpoint, { input });
+      setMovies(res.data);;
+    } catch (err) {
+      console.error('Search failed:', err.message);
+    }
+  };
+
   return (
     <div className='p-6'>
       <h1 className='text-2xl font-semibold text-center mb-4'>
-        {category ? `${category.toUpperCase()} Movies` : 'All Movies'}
+        {category ? `${category.toUpperCase()} Movies 🎬` : 'All Movies 🎬'}
       </h1>
+      <MovieSearch onSearch={handleSearch} />
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6'>
         {loading ? (
           Array.from({ length: 10 }).map((_, idx) => (
